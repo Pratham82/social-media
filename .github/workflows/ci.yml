@@ -32,6 +32,7 @@ jobs:
 
       - name: Cache node_modules
         uses: actions/cache@v2
+        
         env:
           cache-name: cache-node-modules
         with:
@@ -41,12 +42,27 @@ jobs:
             ${{ runner.os }}-build-${{ env.cache-name }}-
             ${{ runner.os }}-build-
             ${{ runner.os }}-
+          - uses: actions/checkout@v2
+          - uses: actions/setup-node@v2
+            with:
+              node-version: 12.x
+              cache: yarn
 
       - name: Install dependencies
-        run: npm i
+        run: yarn install --frozen-lockfile
 
       - name: Run code style check
-        run: npm run lint
+      - yarn run lint
 
       - name: Run tests
-        run: npm run test
+      - run: yarn run test
+
+      # - name: Install dependencies
+      #   run: npm i
+
+
+      # - name: Run code style check
+      #   run: npm run lint
+
+      # - name: Run tests
+      #   run: npm run test
