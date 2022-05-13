@@ -38,10 +38,13 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - name: Install dependencies
-        run: npm i
+        run: npm i --frozen-lockfile
 
       - name: Run code style check
         run: npm run lint
 
+      - name: Install jest globally
+        run: npm i -g jest
+
       - name: Run tests
-        run: npm run test
+        run: npm test

@@ -1,0 +1,9 @@
+const STATUS = {
+  PENDING: "PENDING",
+  REJECTED: "REJECTED",
+  FULFILLED: "FULFILLED",
+};
+
+const AUTH = "AUTH";
+
+export { STATUS, AUTH };
