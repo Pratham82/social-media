@@ -3,6 +3,7 @@
 package.json
 package-lock.json
 *.config.js
+next-env.d.ts
 
 # production
 /build

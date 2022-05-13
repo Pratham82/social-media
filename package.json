@@ -6,12 +6,21 @@
     "start": "next start",
     "lint": "eslint .",
     "lint:fix": "eslint --fix .",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^1.8.1",
+    "classnames": "^2.3.1",
     "next": "latest",
+    "next-themes": "^0.2.0",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "react-hook-form": "^7.31.1",
+    "react-redux": "^8.0.1",
+    "styled-components": "^5.3.5",
+    "twin.macro": "^2.8.2"
   },
   "eslintConfig": {
     "extends": [
@@ -19,27 +28,38 @@
       "react-app/jest"
     ]
   },
+  "babelMacros": {
+    "twin": {
+      "preset": "styled-components"
+    }
+  },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/react": "12.1.5",
+    "@types/jest": "^27.5.1",
     "@types/node": "17.0.4",
     "@types/react": "17.0.38",
+    "@types/react-redux": "^7.1.24",
+    "@types/styled-components": "^5.1.25",
     "@typescript-eslint/eslint-plugin": "^5.22.0",
     "@typescript-eslint/parser": "^5.22.0",
     "autoprefixer": "^10.4.0",
     "eslint": "^8.15.0",
-    "eslint-config-next": "12.1.6",
     "eslint-config-airbnb": "^19.0.4",
+    "eslint-config-airbnb-typescript": "^16.1.4",
+    "eslint-config-next": "12.1.6",
+    "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-jsx-a11y": "^6.5.1",
+    "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.29.4",
     "eslint-plugin-react-hooks": "^4.5.0",
-    "eslint-config-airbnb-typescript": "^16.1.4",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-prettier": "^4.0.0",
+    "husky": "^7.0.0",
+    "jest-environment-jsdom": "^28.1.0",
     "postcss": "^8.4.5",
     "prettier": "^2.5.1",
     "prettier-plugin-tailwindcss": "^0.1.1",
     "tailwindcss": "^3.0.7",
-    "typescript": "4.5.4",
-    "husky": "^7.0.0"
+    "typescript": "4.5.4"
   }
 }
