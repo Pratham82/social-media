@@ -4,6 +4,11 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
 import { useForm } from "react-hook-form";
+import { useDispatch } from "react-redux";
+import { login } from "redux/features/user/slice/user.slice";
+import { AppDispatch } from "redux/store";
+import { validateResponse } from "utils/resHandler";
+import { GetStaticProps } from "next";
 
 const Login: React.FC = (): JSX.Element => {
   const {
@@ -12,14 +17,21 @@ const Login: React.FC = (): JSX.Element => {
     formState: { errors },
   } = useForm();
   const router = useRouter();
+  const dispatch = useDispatch<AppDispatch>();
 
-  const handleLogin = (data: any) => {
-    console.log(data);
+  const handleLogin = async (data: any) => {
+    const user = await dispatch(login(data));
+    if (!validateResponse(user)) {
+      router.push("/home");
+    }
   };
+
   const handleGuestLogin = (e: React.ChangeEvent<HTMLInputElement>) => {
     e.preventDefault();
-    console.log("guest login");
-    router.push("/home");
+    handleLogin({
+      email: process.env.GUEST_EMAIL,
+      password: process.env.GUEST_PASSWORD,
+    });
   };
 
   const loginValidation = {
@@ -32,10 +44,6 @@ const Login: React.FC = (): JSX.Element => {
     },
     password: {
       required: "Password is required",
-      minLength: {
-        value: 8,
-        message: "Password must have at least 8 characters",
-      },
     },
   };
 
@@ -106,3 +114,9 @@ const Login: React.FC = (): JSX.Element => {
 };
 
 export default Login;
+
+export const getStaticProps: GetStaticProps = async () => {
+  return {
+    props: {},
+  };
+};
