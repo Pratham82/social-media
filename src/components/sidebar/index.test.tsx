@@ -1,8 +1,14 @@
 import { render, screen } from "@testing-library/react";
+import { Provider } from "react-redux";
+import { store } from "redux/store";
 import Sidebar from ".";
 
 beforeEach(() => {
-  render(<Sidebar />);
+  render(
+    <Provider store={store}>
+      <Sidebar />
+    </Provider>,
+  );
 });
 
 describe("Sidebar tests", () => {
