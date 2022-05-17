@@ -19,8 +19,11 @@ const Login = async (req: NextApiRequest, res: NextApiResponse) => {
 
     const verifyPass = await verifyPassword(password, userExist.password);
     if (!verifyPass) throw new Error("Wrong credentials");
-    const token = tokenGenerator({ ...userExist._id });
-    success(res, { token, ...userExist._id }, "Successfully logged in");
+    const payload = {
+      id: userExist.id,
+    };
+    const token = tokenGenerator(payload);
+    success(res, { token, user: userExist }, "Successfully logged in");
   } catch (err: any) {
     error(res, err, 401);
   }

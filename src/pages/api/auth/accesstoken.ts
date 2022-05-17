@@ -1,12 +1,15 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { success, error } from "utils/resHandler";
-import { verifyToken } from "../../../utils/tokenHelper";
+import User from "models/user.model";
+import { verifyToken } from "utils/tokenHelper";
 
 const accessToken = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const { token } = req.body;
-    const verifyUser = verifyToken(token);
-    success(res, verifyUser);
+    const verifyUser: any = verifyToken(token);
+    const { id } = verifyUser;
+    const user = await User.findById({ _id: id }).select("-password");
+    success(res, { user, token });
   } catch (err: any) {
     error(res, err);
   }
