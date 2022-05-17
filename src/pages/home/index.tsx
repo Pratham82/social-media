@@ -22,7 +22,7 @@ const Home: React.FC = (): JSX.Element => {
                   alt="user"
                   width={48}
                   height={48}
-                  className="z-[-1] rounded-full"
+                  className="rounded-full"
                 />
               </div>
               <section className="flex">
