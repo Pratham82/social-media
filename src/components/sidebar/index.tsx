@@ -1,6 +1,9 @@
 import { sidebarData } from "assets/data";
+import LogoutIcon from "assets/svg/icons/logout";
+// import SidebarItem from "components/sidebar-item";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import React from "react";
 import toast from "react-hot-toast";
 import { useDispatch } from "react-redux";
 import { logout } from "redux/features/user/slice/user.slice";
@@ -31,8 +34,11 @@ const Sidebar: React.FC = (): JSX.Element => {
             {sidebarData.map(({ id, title, link, icon }: ISidebarItem) => (
               <Link href={link} key={id}>
                 <li
-                  className="flex translate-x-1 cursor-pointer rounded-full py-3 px-3 transition duration-500 hover:bg-gray-200 dark:hover:bg-gray-800"
-                  role="presentation"
+                  className={`flex translate-x-1 cursor-pointer rounded-full py-3 px-3 transition duration-500 hover:bg-gray-200
+                  dark:hover:bg-gray-700 ${
+                    window.location.pathname === link &&
+                    "bg-gray-200 font-semibold text-black dark:hover:text-white"
+                  }`}
                 >
                   {icon}
                   <span className="hidden px-4 md:block" title={title}>
@@ -41,12 +47,12 @@ const Sidebar: React.FC = (): JSX.Element => {
                 </li>
               </Link>
             ))}
-
             <li
               className="flex translate-x-1 cursor-pointer rounded-full py-3 px-3 transition duration-500 hover:bg-gray-200 dark:hover:bg-gray-800"
               role="presentation"
               onClick={handleLogout}
             >
+              <LogoutIcon />
               <span className="hidden px-4 md:block" title="Logout">
                 Logout
               </span>
