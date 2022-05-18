@@ -11,6 +11,7 @@
     "test:watch": "jest --watch"
   },
   "dependencies": {
+    "@headlessui/react": "^1.6.1",
     "@hookform/resolvers": "^2.8.9",
     "@reduxjs/toolkit": "^1.8.1",
     "axios": "^0.21.4",
@@ -19,7 +20,6 @@
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.29.3",
     "mongoose": "^6.3.3",
-    "mongoose-type-url": "^2.1.0",
     "next": "latest",
     "next-themes": "^0.2.0",
     "react": "^17.0.2",
