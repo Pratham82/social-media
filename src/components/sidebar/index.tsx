@@ -1,6 +1,5 @@
 import { sidebarData } from "assets/data";
 import LogoutIcon from "assets/svg/icons/logout";
-// import SidebarItem from "components/sidebar-item";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import React from "react";
@@ -34,9 +33,9 @@ const Sidebar: React.FC = (): JSX.Element => {
             {sidebarData.map(({ id, title, link, icon }: ISidebarItem) => (
               <Link href={link} key={id}>
                 <li
-                  className={`flex translate-x-1 cursor-pointer rounded-full py-3 px-3 transition duration-500 hover:bg-gray-200
+                  className={`my-1 flex translate-x-1 cursor-pointer rounded-full py-3 px-3 transition duration-500 hover:bg-gray-200
                   dark:hover:bg-gray-700 ${
-                    window.location.pathname === link &&
+                    router.pathname === link &&
                     "bg-gray-200 font-semibold text-black dark:hover:text-white"
                   }`}
                 >
@@ -48,7 +47,7 @@ const Sidebar: React.FC = (): JSX.Element => {
               </Link>
             ))}
             <li
-              className="flex translate-x-1 cursor-pointer rounded-full py-3 px-3 transition duration-500 hover:bg-gray-200 dark:hover:bg-gray-800"
+              className="my-1 flex translate-x-1 cursor-pointer rounded-full py-3 px-3 transition duration-500 hover:bg-gray-200 dark:hover:bg-gray-800"
               role="presentation"
               onClick={handleLogout}
             >
