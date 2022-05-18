@@ -1,6 +1,5 @@
 import mongoose from "mongoose";
 import { schemaOptions } from "utils/mongooseOptions";
-import "mongoose-type-url";
 import isEmail from "validator/lib/isEmail";
 import isURL from "validator/lib/isURL";
 import isStrongPassword from "validator/lib/isStrongPassword";
