@@ -16,6 +16,25 @@ const getUserByEmailId = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
+const updateUserBioAndLink = async (
+  req: NextApiRequest,
+  res: NextApiResponse,
+) => {
+  try {
+    const { id, url, bio } = req.body;
+    const user = await User.findById({ _id: id });
+    if (!user) throw new Error("User not found");
+    const updatedUser = await User.findOneAndUpdate(
+      { _id: id },
+      { $set: { url, bio } },
+      { new: true },
+    ).select("-password");
+    success(res, updatedUser);
+  } catch (err: any) {
+    error(res, err);
+  }
+};
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
@@ -24,7 +43,8 @@ export default async function handler(
     case "GET":
       await getUserByEmailId(req, res);
       break;
-    case "UPDATE":
+    case "PUT":
+      await updateUserBioAndLink(req, res);
       break;
     case "DELETE":
       break;

@@ -61,6 +61,18 @@ export const logout = createAsyncThunk(
   },
 );
 
+export const updateUser = createAsyncThunk(
+  "user/updateUser",
+  async (payload: any, thunkApi) => {
+    try {
+      const user = await axios.put("api/user", payload);
+      return user.data.data;
+    } catch (error) {
+      return thunkApi.rejectWithValue(error);
+    }
+  },
+);
+
 const initialState: IUserSliceState = {
   currentUser: {},
   token: null,
@@ -103,6 +115,16 @@ export const userSlice = createSlice({
       state.STATUS = STATUS.FULFILLED;
     });
     builder.addCase(logout.rejected, (state) => {
+      state.STATUS = STATUS.REJECTED;
+    });
+    builder.addCase(updateUser.pending, (state) => {
+      state.STATUS = STATUS.PENDING;
+    });
+    builder.addCase(updateUser.fulfilled, (state, action) => {
+      state.currentUser = action.payload;
+      state.STATUS = STATUS.FULFILLED;
+    });
+    builder.addCase(updateUser.rejected, (state) => {
       state.STATUS = STATUS.REJECTED;
     });
   },
