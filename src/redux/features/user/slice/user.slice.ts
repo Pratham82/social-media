@@ -73,6 +73,32 @@ export const updateUser = createAsyncThunk(
   },
 );
 
+export const uploadUserImage = createAsyncThunk(
+  "user/uploadUserImage",
+  async (payload: any, thunkApi) => {
+    try {
+      if (!payload) return null;
+      const uploadData = new FormData();
+      uploadData.append("file", payload);
+      uploadData.append(
+        "upload_preset",
+        process.env.CLOUDINARY_UPLOAD_PRESET as string,
+      );
+      uploadData.append(
+        "cloud_name",
+        process.env.CLOUDINARY_CLOUD_NAME as string,
+      );
+      const { data } = await axios.post(
+        process.env.CLOUDINARY_URL as string,
+        uploadData,
+      );
+      return data.secure_url;
+    } catch (err) {
+      return thunkApi.rejectWithValue(err);
+    }
+  },
+);
+
 const initialState: IUserSliceState = {
   currentUser: {},
   token: null,
@@ -125,6 +151,15 @@ export const userSlice = createSlice({
       state.STATUS = STATUS.FULFILLED;
     });
     builder.addCase(updateUser.rejected, (state) => {
+      state.STATUS = STATUS.REJECTED;
+    });
+    builder.addCase(uploadUserImage.pending, (state) => {
+      state.STATUS = STATUS.PENDING;
+    });
+    builder.addCase(uploadUserImage.fulfilled, (state) => {
+      state.STATUS = STATUS.FULFILLED;
+    });
+    builder.addCase(uploadUserImage.rejected, (state) => {
       state.STATUS = STATUS.REJECTED;
     });
   },
