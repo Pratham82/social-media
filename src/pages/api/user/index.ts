@@ -21,12 +21,13 @@ const updateUserBioAndLink = async (
   res: NextApiResponse,
 ) => {
   try {
-    const { id, url, bio } = req.body;
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const { id, url, bio, profile_image_url } = req.body;
     const user = await User.findById({ _id: id });
     if (!user) throw new Error("User not found");
     const updatedUser = await User.findOneAndUpdate(
       { _id: id },
-      { $set: { url, bio } },
+      { $set: { url, bio, profile_image_url } },
       { new: true },
     ).select("-password");
     success(res, updatedUser);
