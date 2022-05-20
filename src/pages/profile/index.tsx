@@ -11,11 +11,16 @@ import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import LinkIcon from "assets/svg/icons/link";
 import toast from "react-hot-toast";
-import { updateUser } from "redux/features/user/slice/user.slice";
+import {
+  updateUser,
+  uploadUserImage,
+} from "redux/features/user/slice/user.slice";
+import UploadIcon from "assets/svg/icons/upload";
 
 const Profile: React.FC = (): JSX.Element => {
   const { currentUser, STATUS } = useSelector((state: RootState) => state.user);
   const dispatch = useDispatch<AppDispatch>();
+  const [imageFile, setImageFile] = useState(currentUser.profile_image_url);
   const [isOpen, setIsOpen] = useState(false);
 
   const editProfileValidations = Yup.object().shape({
@@ -33,9 +38,28 @@ const Profile: React.FC = (): JSX.Element => {
     formState: { errors },
   } = useForm(editProfileOptions);
 
+  const handleOnChange = (changeEvent: any) => {
+    const reader = new FileReader();
+
+    reader.onload = (onLoadEvent: any) =>
+      setImageFile(onLoadEvent.target.result);
+
+    reader.readAsDataURL(changeEvent.target.files[0]);
+  };
+
   const handleEditProfile = async (data: any) => {
     try {
-      await dispatch(updateUser({ ...data, id: currentUser.id }));
+      const { payload: newImageUrl } = await dispatch(
+        uploadUserImage(imageFile),
+      );
+      if (newImageUrl)
+        await dispatch(
+          updateUser({
+            ...data,
+            profile_image_url: newImageUrl,
+            id: currentUser.id,
+          }),
+        );
       toast.success("Profile updated successfully");
     } catch (err: any) {
       toast.error(err.message);
@@ -118,6 +142,7 @@ const Profile: React.FC = (): JSX.Element => {
             </div>
           </div>
         )}
+
         <Transition appear show={isOpen} as={Fragment}>
           <Dialog
             as="div"
@@ -152,7 +177,11 @@ const Profile: React.FC = (): JSX.Element => {
                       as="h3"
                       className="flex items-center justify-between text-lg font-bold leading-6 text-gray-900 dark:text-gray-50"
                     >
-                      <button type="button" onClick={() => setIsOpen(false)}>
+                      <button
+                        type="button"
+                        onClick={() => setIsOpen(false)}
+                        disabled={STATUS === "PENDING"}
+                      >
                         <IconContainer>
                           <CloseIcon />
                         </IconContainer>
@@ -162,21 +191,41 @@ const Profile: React.FC = (): JSX.Element => {
                         type="button"
                         className="ml-auto mt-1 mr-2 rounded-2xl border border-gray-500 py-1 px-3 text-sm font-bold transition duration-300 hover:bg-gray-200 dark:hover:bg-gray-800"
                         onClick={handleSubmit(handleEditProfile)}
+                        disabled={STATUS === "PENDING"}
                       >
                         Save
                       </button>
                     </Dialog.Title>
+                    {STATUS === "PENDING" && "Updating Profile..."}
 
                     <div className="mx-4 mt-4">
-                      <div className="mb-3 flex justify-between rounded-full">
+                      <div className="mb-3 flex justify-between">
                         <Image
-                          src={currentUser?.profile_image_url || "/profile.png"}
+                          src={imageFile || currentUser?.profile_image_url}
                           alt={currentUser?.fullName}
                           width={100}
                           height={100}
-                          className="rounded-full"
+                          className="relative rounded-full border"
                         />
+                        <label
+                          htmlFor="imageFile"
+                          className="absolute cursor-pointer self-end "
+                        >
+                          <div className="flex rounded-full border border-gray-700 bg-gray-200 p-1 dark:bg-gray-600">
+                            <UploadIcon />
+                          </div>
+                          <input
+                            type="file"
+                            id="imageFile"
+                            accept=".png,.jpeg,.jpg"
+                            className="hidden"
+                            onChange={(e: any) => {
+                              handleOnChange(e);
+                            }}
+                          />
+                        </label>
                       </div>
+
                       <label htmlFor="bio" className="flex flex-col pt-3">
                         <span className="pb-1 font-bold">Full Name</span>
                         <input
