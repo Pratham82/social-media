@@ -22,7 +22,7 @@ const Container: React.FC<IContainerProps> = ({
       <div className="flex h-screen sm:flex">
         <Sidebar />
         <div className="border-gray-200 dark:border-zinc-800">
-          <header className="fixed w-[600px] border border-gray-200 py-[1.1rem] px-4 text-xl font-bold backdrop-blur-2xl dark:border-gray-800 dark:backdrop-blur-lg">
+          <header className="fixed z-[10] w-[600px] border border-gray-200 py-[1.1rem] px-4 text-xl font-bold backdrop-blur-2xl dark:border-gray-800 dark:backdrop-blur-lg">
             {title}
           </header>
           {/* <main className="min-h-full w-full flex-1 border border-gray-200 px-4 dark:border-zinc-800 sm:min-w-[600px] sm:max-w-2xl lg:max-w-5xl ">

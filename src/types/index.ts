@@ -29,7 +29,6 @@ export interface ISidebarItem {
 }
 export interface ISidebarItemProps extends IChildrenProps {
   link: string;
-  currentPath: string;
 }
 
 export interface IPostItem {

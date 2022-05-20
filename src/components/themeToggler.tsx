@@ -10,7 +10,7 @@ const ThemeToggler = () => {
   if (!mounted) return null;
 
   return (
-    <div className="fixed top-0 right-0 z-[5] mt-2 mr-1">
+    <div className="fixed top-0 right-0 z-[10] mt-2 mr-1">
       <button
         type="button"
         className="m-1 rounded-md bg-gray-200 px-2.5 py-2 dark:bg-gray-600"

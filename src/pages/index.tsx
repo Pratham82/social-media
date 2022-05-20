@@ -13,9 +13,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main className="flex h-screen w-full flex-col md:flex-row">
-        <div className="flex-1 bg-[url('https://abs.twimg.com/sticky/illustrations/lohp_en_1302x955.png')]">
-          a
-        </div>
+        <div className="flex-1 bg-[url('https://abs.twimg.com/sticky/illustrations/lohp_en_1302x955.png')]" />
         <div className="flex flex-1 flex-col items-center justify-center ">
           <h1 className="pb-10 font-lato text-4xl font-bold">Nexus Social</h1>
           <h2 className="pb-3 font-lato text-2xl">
