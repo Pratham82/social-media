@@ -6,22 +6,6 @@ import User from "models/user.model";
 
 connectDB();
 
-const createPost = async (req: NextApiRequest, res: NextApiResponse) => {
-  try {
-    const { id, postContent, postImage } = req.body;
-    const user = await User.findById({ _id: id });
-    if (!user) throw new Error("User not found");
-    const post = await Post.create({
-      createdBy: id,
-      postContent,
-      postImage,
-    });
-    success(res, post);
-  } catch (err: any) {
-    error(res, err);
-  }
-};
-
 const getAllPosts = async (req: NextApiRequest, res: NextApiResponse) => {
   try {
     const posts = await Post.find().populate("createdBy", {
@@ -33,6 +17,23 @@ const getAllPosts = async (req: NextApiRequest, res: NextApiResponse) => {
     const postsCount = await Post.countDocuments();
     if (!posts) throw new Error("Posts not found");
     success(res, { posts, count: postsCount });
+  } catch (err: any) {
+    error(res, err);
+  }
+};
+
+const createPost = async (req: NextApiRequest, res: NextApiResponse) => {
+  try {
+    const { id, postContent, postImage } = req.body;
+    const user = await User.findById({ _id: id });
+    if (!user) throw new Error("User not found");
+    await Post.create({
+      createdBy: id,
+      postContent,
+      postImage,
+    });
+    const newPosts = await getAllPosts(req, res);
+    success(res, { posts: newPosts });
   } catch (err: any) {
     error(res, err);
   }
