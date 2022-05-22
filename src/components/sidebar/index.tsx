@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import React, { useState, Fragment } from "react";
 import toast from "react-hot-toast";
 import { useDispatch, useSelector } from "react-redux";
-import { logout } from "redux/features/user/slice/user.slice";
+import { logout, uploadUserImage } from "redux/features/user/slice/user.slice";
 import { AppDispatch, RootState } from "redux/store";
 import { validateResponse } from "utils/resHandler";
 import { Dialog, Transition } from "@headlessui/react";
@@ -14,6 +14,7 @@ import { useForm } from "react-hook-form";
 import * as Yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
 import Image from "next/image";
+import { createPost } from "redux/features/post/post.slice";
 import { ISidebarItem } from "../../../types";
 
 const Sidebar: React.FC = (): JSX.Element => {
@@ -64,15 +65,16 @@ const Sidebar: React.FC = (): JSX.Element => {
     reset();
   };
 
-  const createPost = async (data: any) => {
+  const handleCreatePost = async (data: any) => {
     try {
-      console.log({
-        ...data,
-        id: currentUser.id,
-      });
-      // call create post api
+      const { payload: newImageUrl } = await dispatch(
+        uploadUserImage(imageFile),
+      );
+      const postPayload = newImageUrl
+        ? { ...data, id: currentUser.id, postImage: newImageUrl }
+        : { ...data, id: currentUser.id };
+      await dispatch(createPost(postPayload));
       toast.success("Profile updated successfully");
-      reset();
     } catch (err: any) {
       toast.error(err.message);
     }
@@ -113,10 +115,13 @@ const Sidebar: React.FC = (): JSX.Element => {
             <li
               className="my-1 flex translate-x-1 cursor-pointer rounded-full bg-gray-200 py-3 px-3 transition duration-500 dark:bg-white dark:text-black"
               role="presentation"
-              onClick={() => setIsOpen(true)}
+              onClick={() => {
+                setIsOpen(true);
+                reset();
+              }}
             >
               <PlusIcon />
-              <span className="hidden px-4 md:block" title="Logout">
+              <span className="hidden px-4 md:block" title="Create Post">
                 Create Post
               </span>
             </li>
@@ -160,20 +165,9 @@ const Sidebar: React.FC = (): JSX.Element => {
                       </button>
                     </Dialog.Title>
 
+                    {/* {STATUS === "PENDING" && <div>Creating post...</div>} */}
                     <div className="mx-2">
-                      <div className="mb-3 flex justify-between">
-                        {/* <Image
-                          src={imageFile}
-                          alt="New post"
-                          width={100}
-                          height={100}
-                          className="relative rounded-full border"
-                        /> */}
-                      </div>
-                      <article
-                        key={Math.random()}
-                        className="flex py-2 dark:border-zinc-800"
-                      >
+                      <article className="flex py-2 dark:border-zinc-800">
                         <div>
                           <Image
                             src={
@@ -226,7 +220,7 @@ const Sidebar: React.FC = (): JSX.Element => {
                         <button
                           type="button"
                           className="ml-auto mt-1 mr-2 rounded-2xl border border-gray-500 py-1 px-3 text-sm font-bold transition duration-300 hover:bg-gray-200 dark:hover:bg-gray-800"
-                          onClick={handleSubmit(createPost)}
+                          onClick={handleSubmit(handleCreatePost)}
                         >
                           Post
                         </button>
