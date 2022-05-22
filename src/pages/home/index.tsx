@@ -16,6 +16,7 @@ const Home: React.FC = (): JSX.Element => {
   useEffect(() => {
     dispatch(getAllPosts());
   }, [dispatch]);
+
   return (
     <div>
       <Container title="Home">
@@ -28,6 +29,7 @@ const Home: React.FC = (): JSX.Element => {
               createdAt,
               createdBy: { fullName, profile_image_url },
               postContent,
+              postImage,
               likes,
               comments,
             }: any) => (
@@ -58,6 +60,17 @@ const Home: React.FC = (): JSX.Element => {
                       {/* </IconContainer> */}
                     </h3>
                     <p>{postContent}</p>
+                    {postImage && (
+                      <div className="pt-2">
+                        <Image
+                          src={postImage}
+                          alt="post"
+                          width={500}
+                          height={500}
+                          className="rounded-md"
+                        />
+                      </div>
+                    )}
                     <div className="flex w-full justify-between">
                       {postIcons.map(({ id, icon }: IPostItem) => (
                         <IconContainer key={id}>
