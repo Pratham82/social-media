@@ -41,3 +41,9 @@ export interface IUserSliceState {
   token: string | null;
   STATUS: string;
 }
+
+export interface IPostsSliceState {
+  posts: [];
+  postsCount: number;
+  STATUS: string;
+}
