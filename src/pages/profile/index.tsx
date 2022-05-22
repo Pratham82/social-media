@@ -4,7 +4,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { AppDispatch, RootState } from "redux/store";
 import { useState, Fragment } from "react";
 import { Dialog, Transition } from "@headlessui/react";
-import CloseIcon from "assets/svg/icons/close";
 import IconContainer from "components/icon-container";
 import { useForm } from "react-hook-form";
 import * as Yup from "yup";
@@ -15,7 +14,7 @@ import {
   updateUser,
   uploadUserImage,
 } from "redux/features/user/slice/user.slice";
-import UploadIcon from "assets/svg/icons/upload";
+import { CloseIcon, UploadIcon } from "assets/svg/icons";
 
 const Profile: React.FC = (): JSX.Element => {
   const { currentUser, STATUS } = useSelector((state: RootState) => state.user);
