@@ -11,7 +11,6 @@ export const createPost = createAsyncThunk(
       const {
         data: { data, message },
       } = await axios.post("api/post", payload);
-      console.log(data);
       toast.success(message);
       return data;
     } catch (error) {
@@ -57,6 +56,17 @@ export const postSlice = createSlice({
       state.STATUS = STATUS.FULFILLED;
     });
     builder.addCase(getAllPosts.rejected, (state) => {
+      state.STATUS = STATUS.REJECTED;
+    });
+    builder.addCase(createPost.pending, (state) => {
+      state.STATUS = STATUS.PENDING;
+    });
+    builder.addCase(createPost.fulfilled, (state, action) => {
+      state.posts = action.payload.posts;
+      state.postsCount = action.payload.count;
+      state.STATUS = STATUS.FULFILLED;
+    });
+    builder.addCase(createPost.rejected, (state) => {
       state.STATUS = STATUS.REJECTED;
     });
   },
