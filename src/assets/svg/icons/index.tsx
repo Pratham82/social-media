@@ -11,6 +11,8 @@ import OptionIcon from "./option";
 import PlusIcon from "./plus";
 import UploadIcon from "./upload";
 import ImageIcon from "./image";
+import EditIcon from "./edit";
+import DeleteIcon from "./delete";
 
 export {
   HomeIcon,
@@ -26,4 +28,6 @@ export {
   PlusIcon,
   UploadIcon,
   ImageIcon,
+  EditIcon,
+  DeleteIcon,
 };
