@@ -14,7 +14,7 @@ export const createPost = createAsyncThunk(
       toast.success(message);
       return data;
     } catch (error) {
-      toast.error("Invalid email or password");
+      toast.error("Unable to create post");
       return thunkApi.rejectWithValue(error);
     }
   },
@@ -30,7 +30,23 @@ export const getAllPosts = createAsyncThunk(
       toast.success(message);
       return data;
     } catch (error) {
-      toast.error("Invalid email or password");
+      toast.error("Unable to fetch posts");
+      return thunkApi.rejectWithValue(error);
+    }
+  },
+);
+
+export const deletePost = createAsyncThunk(
+  "post/deletePost",
+  async (payload: any, thunkApi) => {
+    try {
+      const {
+        data: { data },
+      } = await axios.delete("api/post", { data: payload });
+      toast.success("Post deleted successfully");
+      return data;
+    } catch (error) {
+      toast.error("Unable to delete post");
       return thunkApi.rejectWithValue(error);
     }
   },
@@ -67,6 +83,17 @@ export const postSlice = createSlice({
       state.STATUS = STATUS.FULFILLED;
     });
     builder.addCase(createPost.rejected, (state) => {
+      state.STATUS = STATUS.REJECTED;
+    });
+    builder.addCase(deletePost.pending, (state) => {
+      state.STATUS = STATUS.PENDING;
+    });
+    builder.addCase(deletePost.fulfilled, (state, action) => {
+      state.posts = action.payload.posts;
+      state.postsCount = action.payload.count;
+      state.STATUS = STATUS.FULFILLED;
+    });
+    builder.addCase(deletePost.rejected, (state) => {
       state.STATUS = STATUS.REJECTED;
     });
   },
