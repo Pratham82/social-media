@@ -39,6 +39,19 @@ const createPost = async (req: NextApiRequest, res: NextApiResponse) => {
   }
 };
 
+const deletePost = async (req: NextApiRequest, res: NextApiResponse) => {
+  try {
+    const { postId } = req.body;
+    const post = await Post.findById({ _id: postId });
+    if (!post) throw new Error("Post not found");
+    await post.remove();
+    const newPosts = await getAllPosts(req, res);
+    success(res, { posts: newPosts });
+  } catch (err: any) {
+    error(res, err);
+  }
+};
+
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
@@ -53,6 +66,7 @@ export default async function handler(
     case "PUT":
       break;
     case "DELETE":
+      await deletePost(req, res);
       break;
     default:
       res.status(405).json({ message: "Method not allowed" });

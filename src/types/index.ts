@@ -47,3 +47,25 @@ export interface IPostsSliceState {
   postsCount: number;
   STATUS: string;
 }
+
+export interface ICreatedBy {
+  fullName: string;
+  profile_image_url: string;
+}
+export interface IPostCardProps {
+  _id: string;
+  createdAt: string;
+  createdBy: ICreatedBy;
+  postContent: string;
+  postImage: string;
+  likes: [string];
+  comments: [string];
+}
+
+export interface IPostCard {
+  postData: IPostCardProps;
+}
+
+export interface IDropDownProps {
+  postId: string;
+}
